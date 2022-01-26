@@ -57,7 +57,7 @@ CSMatrix::CSMatrix(LocatingArray *locatingArray) {
 	// initialize index-to-column map (to be populated later)
 	mapping = new Mapping;
 	mapping->mappedTo = 0;
-	mapping->mapping = NULL;
+	mapping->mapping = nullptr;
 	
 	// sum of squares of each column for normalization
 	vector <float>sumOfSquares;
@@ -173,7 +173,7 @@ void CSMatrix::addTWayInteractions(CSCol *csColA, int colBMax_i, int &col_i, int
 		
 		// set mapping for this column
 		mapping[colB_i] = new Mapping;
-		mapping[colB_i]->mapping = (t > 1 ? new Mapping*[colCMax_i] : NULL);
+		mapping[colB_i]->mapping = (t > 1 ? new Mapping*[colCMax_i] : nullptr);
 		mapping[colB_i]->mappedTo = (csColA->factors > 0 ? col_i : colB_i + colBOffset);
 		Mapping *groupMapping = mapping[colB_i];
 		
@@ -306,18 +306,18 @@ void CSMatrix::reorderRows(int k, int c) {
 	long long int *rowContributions = new long long int[rows];
 	
 	Path *path = new Path;
-	path->entryA = NULL;
-	path->entryB = NULL;
+	path->entryA = nullptr;
+	path->entryB = nullptr;
 	path->min = coverableMin;
 	path->max = getCols() - 1;
 	
 	while (true) {
 		nPaths = 0;
 		for (int row_i = 0; row_i < rows; row_i++) rowContributions[row_i] = 0;
-		pathSort(array, path, 0, nPaths, NULL);
+		pathSort(array, path, 0, nPaths, nullptr);
 		
 		score = 0;
-		settingToResample = NULL;
+		settingToResample = nullptr;
 		pathLAChecker(array, path, path, 0, k, score, settingToResample, rowContributions);
 		minCountCheck(array, c, score, settingToResample, rowContributions);
 		
@@ -386,7 +386,7 @@ void CSMatrix::minCountCheck(CSCol **array, int c,
 				count[col_i]++;
 				
 				// add row contributions
-				if (rowContributions != NULL) {
+				if (rowContributions != nullptr) {
 					rowContributions[row_i]++;
 				}
 			}
@@ -397,7 +397,7 @@ void CSMatrix::minCountCheck(CSCol **array, int c,
 		if (array[col_i]->coverable && count[col_i] < c) {
 //			cout << "Below c requirement (" << count[col_i] << "): " << getColName(array[col_i]) << endl;
 			score += c - count[col_i];
-			if (settingToResample == NULL) {
+			if (settingToResample == nullptr) {
 				// randomly choose a setting in the column to resample
 				settingToResample = &array[col_i]->setting[rand() % array[col_i]->factors];
 			}
@@ -459,8 +459,8 @@ void CSMatrix::performCheck(int k, int c) {
 	cout << "t-way interactions begin at: " << tWayMin << endl;
 	
 	Path *path = new Path;
-	path->entryA = NULL;
-	path->entryB = NULL;
+	path->entryA = nullptr;
+	path->entryB = nullptr;
 	path->min = coverableMin;
 	path->max = getCols() - 1;
 	
@@ -484,9 +484,9 @@ void CSMatrix::performCheck(int k, int c) {
 	
 	// grab initial time
 	current_utc_time( &start);
-	FactorSetting *settingToResample = NULL;
-	pathLAChecker(array, path, path, 0, k, score, settingToResample, NULL);
-	minCountCheck(array, c, score, settingToResample, NULL);
+	FactorSetting *settingToResample = nullptr;
+	pathLAChecker(array, path, path, 0, k, score, settingToResample, nullptr);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	// check current time
 	current_utc_time( &finish);
 	// get elapsed seconds
@@ -514,7 +514,7 @@ void CSMatrix::performCheck(int k, int c) {
 	// grab initial time
 	current_utc_time(&start);
 	score = getArrayScore(array);
-	minCountCheck(array, c, score, settingToResample, NULL);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	// check current time
 	current_utc_time(&finish);
 	// get elapsed seconds
@@ -530,7 +530,7 @@ void CSMatrix::performCheck(int k, int c) {
 	// grab initial time
 	current_utc_time(&start);
 	score = getBruteForceArrayScore(array, k);
-	minCountCheck(array, c, score, settingToResample, NULL);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	// check current time
 	current_utc_time(&finish);
 	// get elapsed seconds
@@ -579,11 +579,11 @@ void CSMatrix::autoFindRows(int k, int c, int startRows) {
 	int factors = locatingArray->getFactors();
 	int nPaths = 0;
 	long long int score;
-	FactorSetting *settingToResample = NULL;
+	FactorSetting *settingToResample = nullptr;
 	
 	Path *path = new Path;
-	path->entryA = NULL;
-	path->entryB = NULL;
+	path->entryA = nullptr;
+	path->entryB = nullptr;
 //	path->min = twoWayMin;
 	path->min = 0;
 	path->max = getCols() - 1;
@@ -608,7 +608,7 @@ void CSMatrix::autoFindRows(int k, int c, int startRows) {
 			
 			cout << "Score: " << score << endl;
 			
-			if (settingToResample == NULL) {
+			if (settingToResample == nullptr) {
 				testPassed = true;
 				break;
 			} else if (score > 100) {
@@ -664,11 +664,11 @@ void CSMatrix::randomFix(int k, int c, int totalRows) {
 	int factors = locatingArray->getFactors();
 	int nPaths = 0;
 	long long int score;
-	FactorSetting *settingToResample = NULL;
+	FactorSetting *settingToResample = nullptr;
 	
 	Path *path = new Path;
-	path->entryA = NULL;
-	path->entryB = NULL;
+	path->entryA = nullptr;
+	path->entryB = nullptr;
 	path->min = coverableMin;
 	path->max = getCols() - 1;
 	
@@ -681,7 +681,7 @@ void CSMatrix::randomFix(int k, int c, int totalRows) {
 	score = 0;
 	randomizePaths(array, settingToResample, path, 0, k, c, score, &pathList, iters);
 	
-	minCountCheck(array, c, score, settingToResample, NULL);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	
 	cout << "Score: " << score << endl;
 	
@@ -708,8 +708,8 @@ void CSMatrix::systematicRandomFix(int k, int c, int initialRows, int minChunk) 
 	cout << "t-way interactions begin at: " << tWayMin << endl;
 	
 	Path *path = new Path;
-	path->entryA = NULL;
-	path->entryB = NULL;
+	path->entryA = nullptr;
+	path->entryB = nullptr;
 	path->min = coverableMin;
 	path->max = getCols() - 1;
 	
@@ -728,9 +728,9 @@ void CSMatrix::systematicRandomFix(int k, int c, int initialRows, int minChunk) 
 	// grab initial time
 	current_utc_time( &start);
 	
-	FactorSetting *settingToResample = NULL;
-	pathLAChecker(array, path, path, 0, k, score, settingToResample, NULL);
-	minCountCheck(array, c, score, settingToResample, NULL);
+	FactorSetting *settingToResample = nullptr;
+	pathLAChecker(array, path, path, 0, k, score, settingToResample, nullptr);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	
 	// check current time
 	current_utc_time( &finish);
@@ -743,7 +743,7 @@ void CSMatrix::systematicRandomFix(int k, int c, int initialRows, int minChunk) 
 	cout << "Score: " << score << endl;
 	int factors = locatingArray->getFactors();
 	
-	while (settingToResample != NULL) {
+	while (settingToResample != nullptr) {
 		resizeArray(array, totalRows);
 		
 		randomizePaths(array, settingToResample, path, finalizedRows, k, c, score, &pathList, 1000);
@@ -780,14 +780,14 @@ void CSMatrix::randomizePaths(CSCol **array, FactorSetting *&settingToResample, 
 	// sort paths
 	for (std::list<Path*>::iterator it = pathList->begin(); it != pathList->end(); it++) {
 		nPaths = 0;
-		pathSort(array, *it, row_top, nPaths, NULL);
+		pathSort(array, *it, row_top, nPaths, nullptr);
 	}
 	
 	// run initial checker
 	score = 0;
-	settingToResample = NULL;
-	pathLAChecker(array, path, path, 0, k, score, settingToResample, NULL);
-	minCountCheck(array, c, score, settingToResample, NULL);
+	settingToResample = nullptr;
+	pathLAChecker(array, path, path, 0, k, score, settingToResample, nullptr);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	cout << "Score: " << score << endl;
 	
 	for (int iter = 0; iter < iters && score > 0; iter++) {
@@ -797,14 +797,14 @@ void CSMatrix::randomizePaths(CSCol **array, FactorSetting *&settingToResample, 
 		float elapsedTime;
 		
 		// ensure we recieved an actual setting
-		if (settingToResample == NULL) {
+		if (settingToResample == nullptr) {
 			cout << "No resampleable setting was found" << endl;
 			break;
 		}
 		
 		// get factors to resample (all factors in constraint group if one exists)
 		conGroup = groupingInfo[settingToResample->factor_i]->conGroup;
-		if (conGroup == NULL) {
+		if (conGroup == nullptr) {
 			// get factor to resample
 			factor_i = settingToResample->factor_i;
 			
@@ -862,7 +862,7 @@ void CSMatrix::randomizePaths(CSCol **array, FactorSetting *&settingToResample, 
 		// sort paths and recheck score
 		for (std::list<Path*>::iterator it = pathList->begin(); it != pathList->end(); it++) {
 			nPaths = 0;
-			pathSort(array, *it, row_top, nPaths, NULL);
+			pathSort(array, *it, row_top, nPaths, nullptr);
 		}
 		// check current time
 		current_utc_time( &finish);
@@ -873,12 +873,12 @@ void CSMatrix::randomizePaths(CSCol **array, FactorSetting *&settingToResample, 
 //		cout << "Elapsed After Sort: " << elapsedTime << endl;
 		
 		newScore = 0;
-		FactorSetting *newSettingToResample = NULL;
+		FactorSetting *newSettingToResample = nullptr;
 		
 		// grab initial time
 		current_utc_time( &start);
-		pathLAChecker(array, path, path, 0, k, newScore, newSettingToResample, NULL);
-		minCountCheck(array, c, newScore, newSettingToResample, NULL);
+		pathLAChecker(array, path, path, 0, k, newScore, newSettingToResample, nullptr);
+		minCountCheck(array, c, newScore, newSettingToResample, nullptr);
 		// check current time
 		current_utc_time( &finish);
 		// get elapsed seconds
@@ -896,7 +896,7 @@ void CSMatrix::randomizePaths(CSCol **array, FactorSetting *&settingToResample, 
 			cout << "Rows: " << rows << " Iter: " << iter << ": ";
 			cout << score << " \tMaintained " << endl;
 			
-			if (conGroup == NULL) {
+			if (conGroup == nullptr) {
 				// get factor to resample
 				factor_i = settingToResample->factor_i;
 				
@@ -958,9 +958,9 @@ void CSMatrix::randomizePaths(CSCol **array, FactorSetting *&settingToResample, 
 		pathSort(array, *it, row_top, nPaths, pathList);
 	}
 	score = 0;
-	settingToResample = NULL;
-	pathLAChecker(array, path, path, 0, k, score, settingToResample, NULL);
-	minCountCheck(array, c, score, settingToResample, NULL);
+	settingToResample = nullptr;
+	pathLAChecker(array, path, path, 0, k, score, settingToResample, nullptr);
+	minCountCheck(array, c, score, settingToResample, nullptr);
 	
 }
 
@@ -970,7 +970,7 @@ void CSMatrix::randomizeRows(CSCol **backupArray, CSCol **array, long long int &
 	long long int newCsScore;
 	int factor_i, resampleFactor;
 	
-	FactorSetting *settingToResample = NULL;
+	FactorSetting *settingToResample = nullptr;
 	
 	char **levelMatrix = locatingArray->getLevelMatrix();
 	
@@ -1234,7 +1234,7 @@ void CSMatrix::print() {
 }
 
 void CSMatrix::countOccurrences(CSCol *csCol, Occurrence *occurrence, int minSetting_i, float magnitude) {
-	if (occurrence->list == NULL) return;
+	if (occurrence->list == nullptr) return;
 	
 	for (int setting_i = minSetting_i; setting_i < csCol->factors; setting_i++) {
 		occurrence->list[csCol->setting[setting_i].factor_i].count++;
@@ -1248,7 +1248,7 @@ int CSMatrix::getColIndex(CSCol *csCol) {
 	
 	Mapping *m = mapping;
 	for (int setting_i = 0; setting_i < csCol->factors; setting_i++) {
-		if (m == NULL) return -1;
+		if (m == nullptr) return -1;
 		m = m->mapping[factorLevelMap[csCol->setting[setting_i].factor_i][csCol->setting[setting_i].index]];
 	}
 	return m->mappedTo;
@@ -1382,12 +1382,12 @@ void CSMatrix::pathSort(CSCol **array, Path *path, int row_i, int &nPaths, list 
 	if (path->min == path->max) {
 		deletePath(path->entryA);
 		deletePath(path->entryB);
-		path->entryA = NULL;
-		path->entryB = NULL;
+		path->entryA = nullptr;
+		path->entryB = nullptr;
 		return;
 	} else if (row_i >= rows) {
 		// add to list
-		if (pathList != NULL) pathList->push_front(path);
+		if (pathList != nullptr) pathList->push_front(path);
 		
 		return;
 	}
@@ -1418,10 +1418,10 @@ void CSMatrix::pathSort(CSCol **array, Path *path, int row_i, int &nPaths, list 
 	if (path->min <= tempMin) {
 		nPaths++;
 		// allocate memory if none exists
-		if (path->entryA == NULL) {
+		if (path->entryA == nullptr) {
 			path->entryA = new Path;
-			path->entryA->entryA = NULL;
-			path->entryA->entryB = NULL;
+			path->entryA->entryA = nullptr;
+			path->entryA->entryB = nullptr;
 		}
 		
 		// populate path for entryA
@@ -1433,16 +1433,16 @@ void CSMatrix::pathSort(CSCol **array, Path *path, int row_i, int &nPaths, list 
 	} else {
 		// delete unnecessary path for entryA
 		deletePath(path->entryA);
-		path->entryA = NULL;
+		path->entryA = nullptr;
 	}
 	
 	if (tempMax <= path->max) {
 		nPaths++;
 		// allocate memory if none exists
-		if (path->entryB == NULL) {
+		if (path->entryB == nullptr) {
 			path->entryB = new Path;
-			path->entryB->entryA = NULL;
-			path->entryB->entryB = NULL;
+			path->entryB->entryA = nullptr;
+			path->entryB->entryB = nullptr;
 		}
 		
 		// populate path for entryB
@@ -1453,12 +1453,12 @@ void CSMatrix::pathSort(CSCol **array, Path *path, int row_i, int &nPaths, list 
 		pathSort(array, path->entryB, row_i + 1, nPaths, pathList);
 	} else {
 		deletePath(path->entryB);
-		path->entryB = NULL;
+		path->entryB = nullptr;
 	}
 }
 
 void CSMatrix::deletePath(Path *path) {
-	if (path != NULL) {
+	if (path != nullptr) {
 		deletePath(path->entryA);
 		deletePath(path->entryB);
 		delete path;
@@ -1468,7 +1468,7 @@ void CSMatrix::deletePath(Path *path) {
 // Locating Array Checker
 void CSMatrix::pathLAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i, int k,
 		long long int &score, FactorSetting *&settingToResample, long long int *rowContributions) {
-	if (k == 0 || pathA == NULL || pathB == NULL || pathA->min == pathB->max) {
+	if (k == 0 || pathA == nullptr || pathB == nullptr || pathA->min == pathB->max) {
 		return;
 	} else if (row_i == rows) {
 //		cout << "Issue " << getColName(array[pathA->min]) << " vs " << getColName(array[pathB->max]) << endl;
@@ -1479,7 +1479,7 @@ void CSMatrix::pathLAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 		}
 		
 		// set a setting to resample
-		if (settingToResample == NULL) {
+		if (settingToResample == nullptr) {
 			int columnToResample = -1;
 			
 			/*
@@ -1525,16 +1525,16 @@ void CSMatrix::pathLAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 	Path *pathAentryA, *pathAentryB, *pathBentryA, *pathBentryB;
 	
 	if (pathA->min == pathA->max) {
-		pathAentryA = (array[pathA->min]->dataP[row_i] == ENTRY_A ? pathA : NULL);
-		pathAentryB = (array[pathA->min]->dataP[row_i] == ENTRY_B ? pathA : NULL);
+		pathAentryA = (array[pathA->min]->dataP[row_i] == ENTRY_A ? pathA : nullptr);
+		pathAentryB = (array[pathA->min]->dataP[row_i] == ENTRY_B ? pathA : nullptr);
 	} else {
 		pathAentryA = pathA->entryA;
 		pathAentryB = pathA->entryB;
 	}
 	
 	if (pathB->min == pathB->max) {
-		pathBentryA = (array[pathB->min]->dataP[row_i] == ENTRY_A ? pathB : NULL);
-		pathBentryB = (array[pathB->min]->dataP[row_i] == ENTRY_B ? pathB : NULL);
+		pathBentryA = (array[pathB->min]->dataP[row_i] == ENTRY_A ? pathB : nullptr);
+		pathBentryB = (array[pathB->min]->dataP[row_i] == ENTRY_B ? pathB : nullptr);
 	} else {
 		pathBentryA = pathB->entryA;
 		pathBentryB = pathB->entryB;
@@ -1545,7 +1545,7 @@ void CSMatrix::pathLAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 	pathLAChecker(array, pathAentryA, pathBentryB, row_i + 1, k - 1, score, settingToResample, rowContributions);
 	
 	// add row contributions
-	if (rowContributions != NULL && pathAentryA != NULL && pathBentryB != NULL) {
+	if (rowContributions != nullptr && pathAentryA != nullptr && pathBentryB != nullptr) {
 		rowContributions[row_i] += (pathAentryA->max - pathAentryA->min + 1) * (pathBentryB->max - pathBentryB->min + 1);
 	}
 	
@@ -1553,7 +1553,7 @@ void CSMatrix::pathLAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 		pathLAChecker(array, pathAentryB, pathBentryA, row_i + 1, k - 1, score, settingToResample, rowContributions);
 		
 		// add row contributions
-		if (rowContributions != NULL && pathAentryB != NULL && pathBentryA != NULL) {
+		if (rowContributions != nullptr && pathAentryB != nullptr && pathBentryA != nullptr) {
 			rowContributions[row_i] += (pathAentryB->max - pathAentryB->min + 1) * (pathBentryA->max - pathBentryA->min + 1);
 		}
 	}
@@ -1562,7 +1562,7 @@ void CSMatrix::pathLAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 // Detecting Array Checker
 void CSMatrix::pathDAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i, int k,
 		long long int &score, FactorSetting *&settingToResample, long long int *rowContributions) {
-	if (k == 0 || pathA == NULL || pathB == NULL || pathA->min == pathB->max) {
+	if (k == 0 || pathA == nullptr || pathB == nullptr || pathA->min == pathB->max) {
 		return;
 	} else if (row_i == rows) {
 //		cout << getColName(array[pathA->min]) << " vs " << getColName(array[pathB->max]) << endl;
@@ -1573,7 +1573,7 @@ void CSMatrix::pathDAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 		}
 		
 		// set a setting to resample
-		if (settingToResample == NULL) {
+		if (settingToResample == nullptr) {
 			int columnToResample;
 			int offset;
 			do {
@@ -1595,16 +1595,16 @@ void CSMatrix::pathDAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 	Path *pathAentryA, *pathAentryB, *pathBentryA, *pathBentryB;
 	
 	if (pathA->min == pathA->max) {
-		pathAentryA = (array[pathA->min]->dataP[row_i] == ENTRY_A ? pathA : NULL);
-		pathAentryB = (array[pathA->min]->dataP[row_i] == ENTRY_B ? pathA : NULL);
+		pathAentryA = (array[pathA->min]->dataP[row_i] == ENTRY_A ? pathA : nullptr);
+		pathAentryB = (array[pathA->min]->dataP[row_i] == ENTRY_B ? pathA : nullptr);
 	} else {
 		pathAentryA = pathA->entryA;
 		pathAentryB = pathA->entryB;
 	}
 	
 	if (pathB->min == pathB->max) {
-		pathBentryA = (array[pathB->min]->dataP[row_i] == ENTRY_A ? pathB : NULL);
-		pathBentryB = (array[pathB->min]->dataP[row_i] == ENTRY_B ? pathB : NULL);
+		pathBentryA = (array[pathB->min]->dataP[row_i] == ENTRY_A ? pathB : nullptr);
+		pathBentryB = (array[pathB->min]->dataP[row_i] == ENTRY_B ? pathB : nullptr);
 	} else {
 		pathBentryA = pathB->entryA;
 		pathBentryB = pathB->entryB;
@@ -1616,7 +1616,7 @@ void CSMatrix::pathDAChecker(CSCol **array, Path *pathA, Path *pathB, int row_i,
 	pathDAChecker(array, pathAentryA, pathBentryB, row_i + 1, k - 1, score, settingToResample, rowContributions);
 	
 	// add row contributions
-	if (rowContributions != NULL && pathAentryA != NULL && pathBentryB != NULL) {
+	if (rowContributions != nullptr && pathAentryA != nullptr && pathBentryB != nullptr) {
 		rowContributions[row_i] += (pathAentryA->max - pathAentryA->min + 1) * (pathBentryB->max - pathBentryB->min + 1);
 	}
 	
@@ -1679,9 +1679,9 @@ long CSMatrix::checkAdvanced(CSCol **array, int k, int min, int max, int row_top
 		CSCol *csCol1 = array[min];
 		CSCol *csCol2 = array[max];
 		
-		if (settingToResample == NULL) {
+		if (settingToResample == nullptr) {
 			// choose random factor+level for resampling
-			CSCol *csColToResample = NULL;
+			CSCol *csColToResample = nullptr;
 			
 			if (csCol1->factors != 0 && csCol2->factors != 0) {
 				// neither has 0 factors, choose randomly
@@ -1699,7 +1699,7 @@ long CSMatrix::checkAdvanced(CSCol **array, int k, int min, int max, int row_top
 			}
 			
 			// chose a random factor setting to resample
-			if (csColToResample != NULL) {
+			if (csColToResample != nullptr) {
 				settingToResample = &csColToResample->setting[rand() % csColToResample->factors];
 			}
 		}
@@ -1956,7 +1956,7 @@ void CSMatrix::addRowFix(CSCol **array, long long int &csScore) {
 		
 		// find the best column index (with the best score)
 		bestScore = csScore;	// the original best is the original score
-		bestCol = NULL;			// no best column yet
+		bestCol = nullptr;			// no best column yet
 		
 		// backup the sorted order of the array
 		memcpy(backupArray, array, sizeof(CSCol*) * cols); // backup array
@@ -2243,7 +2243,7 @@ CSMatrix::~CSMatrix() {
 					// because the main effects (although separate) are not differentiated in any interactions that they are included in.
 					// We only deallocate the mapping->mapping array for the first main effect in a group so as not to deallocate the same array more than once.
 					// We therefore ignore this main effect in terms of deallocating the mapping-mapping array.
-				} else if (mappingTemp->mapping != NULL) {
+				} else if (mappingTemp->mapping != nullptr) {
 					delete[] mappingTemp->mapping;
 				}
 				

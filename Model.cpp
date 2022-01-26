@@ -26,7 +26,7 @@ Model::Model(VectorXf *response, int maxTerms, CSMatrix *csMatrix) {
 	terms = 1;
 	hTermIndex = new TermIndex;
 	hTermIndex->termIndex = 0;
-	hTermIndex->next = NULL;
+	hTermIndex->next = nullptr;
 	
 	// this is a one line way to get the same intercept above
 	leastSquares();
@@ -61,11 +61,11 @@ Model::Model(Model *model) {
 	
 	// copy term index list
 	TermIndex **destTermIndex = &hTermIndex;
-	for (TermIndex *pTermIndex = model->hTermIndex; pTermIndex != NULL;
+	for (TermIndex *pTermIndex = model->hTermIndex; pTermIndex != nullptr;
 			pTermIndex = pTermIndex->next) {
 		(*destTermIndex) = new TermIndex;
 		(*destTermIndex)->termIndex = pTermIndex->termIndex;
-		(*destTermIndex)->next = NULL;
+		(*destTermIndex)->next = nullptr;
 		destTermIndex = &(*destTermIndex)->next;
 	}
 }
@@ -83,7 +83,7 @@ void Model::printModelFactors() {
 	
 	// print out each term
 	int term_i = 0;
-	for (TermIndex *pTermIndex = hTermIndex; pTermIndex != NULL; pTermIndex = pTermIndex->next) {
+	for (TermIndex *pTermIndex = hTermIndex; pTermIndex != nullptr; pTermIndex = pTermIndex->next) {
 		// print out the coefficient
 		int termIndex = pTermIndex->termIndex;
 		cout << setw(15) << right << coefVec[term_i++] << " | ";
@@ -275,7 +275,7 @@ float Model::getRSquared() {
 
 // check if term is part of the model
 bool Model::termExists(int col_i) {
-	for (TermIndex *pTermIndex = hTermIndex; pTermIndex != NULL; pTermIndex = pTermIndex->next) {
+	for (TermIndex *pTermIndex = hTermIndex; pTermIndex != nullptr; pTermIndex = pTermIndex->next) {
 		if (pTermIndex->termIndex == col_i) {
 			// term was found!
 			return true;
@@ -289,7 +289,7 @@ bool Model::termExists(int col_i) {
 bool Model::addTerm(int col_i) {
 	
 	TermIndex **pTermIndex = &hTermIndex;
-	for (; *pTermIndex != NULL; pTermIndex = &(*pTermIndex)->next) {
+	for (; *pTermIndex != nullptr; pTermIndex = &(*pTermIndex)->next) {
 		
 		if ((*pTermIndex)->termIndex == col_i) {
 			
@@ -313,7 +313,7 @@ bool Model::addTerm(int col_i) {
 	// create a new term index at the end
 	TermIndex *termIndex = new TermIndex;
 	termIndex->termIndex = col_i;
-	termIndex->next = NULL;
+	termIndex->next = nullptr;
 	(*pTermIndex) = termIndex;
 	terms++;
 	
@@ -324,7 +324,7 @@ bool Model::addTerm(int col_i) {
 // remove a term from the model
 bool Model::removeTerm(int col_i) {
 	// loop through the term index list
-	for (TermIndex **pTermIndex = &hTermIndex; *pTermIndex != NULL; pTermIndex = &(*pTermIndex)->next) {
+	for (TermIndex **pTermIndex = &hTermIndex; *pTermIndex != nullptr; pTermIndex = &(*pTermIndex)->next) {
 		// check if it equals the term to be removed (col_i)
 		if ((*pTermIndex)->termIndex == col_i) {
 			// take the current term index out of the list
@@ -371,7 +371,7 @@ void Model::setupWorkSpace(int rows, int cols) {
 void Model::countOccurrences(Occurrence *occurrence) {
 	// count occurrences for each term
 	int term_i = 0;
-	for (TermIndex *pTermIndex = hTermIndex; pTermIndex != NULL; pTermIndex = pTermIndex->next) {
+	for (TermIndex *pTermIndex = hTermIndex; pTermIndex != nullptr; pTermIndex = pTermIndex->next) {
 		int termIndex = pTermIndex->termIndex;
 		float magnitude = coefVec[term_i++];
 		csMatrix->countOccurrences(csMatrix->getCol(termIndex), occurrence, 0, magnitude);
@@ -383,7 +383,7 @@ bool Model::isDuplicate(Model *model) {
 	TermIndex *p1TermIndex = hTermIndex;
 	TermIndex *p2TermIndex = model->hTermIndex;
 	
-	while (!(p1TermIndex == NULL && p2TermIndex == NULL)) {
+	while (!(p1TermIndex == nullptr && p2TermIndex == nullptr)) {
 		if (p1TermIndex->termIndex != p2TermIndex->termIndex) return false;
 		
 		p1TermIndex = p1TermIndex->next;
@@ -396,7 +396,7 @@ bool Model::isDuplicate(Model *model) {
 Model::~Model() {
 	
 	// delete term index list
-	while (hTermIndex != NULL) {
+	while (hTermIndex != nullptr) {
 		TermIndex *removed = hTermIndex;
 		hTermIndex = hTermIndex->next;
 		delete removed;

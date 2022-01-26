@@ -15,16 +15,16 @@ LocatingArray::LocatingArray(int factors, int *levelCounts) {
 		factorGrouping[factor_i]->levels = levelCounts[factor_i];
 		
 		factorGrouping[factor_i]->grouped = false;
-		factorGrouping[factor_i]->levelGroups = NULL;
+		factorGrouping[factor_i]->levelGroups = nullptr;
 		
-		factorGrouping[factor_i]->conGroup = NULL;
+		factorGrouping[factor_i]->conGroup = nullptr;
 		factorGrouping[factor_i]->conGroupIndex = -1;
 	}
 	
 	nConGroups = 0;
 	conGroups = new ConstraintGroup*[nConGroups];
 	
-	factorData = NULL;
+	factorData = nullptr;
 
 }
 
@@ -77,10 +77,10 @@ LocatingArray::LocatingArray(string file, string factorDataFile) {
 				factorGrouping[factor_i]->levelGroups[level_i] = tempData;
 			}
 		} else {
-			factorGrouping[factor_i]->levelGroups = NULL;
+			factorGrouping[factor_i]->levelGroups = nullptr;
 		}
 		
-		factorGrouping[factor_i]->conGroup = NULL;
+		factorGrouping[factor_i]->conGroup = nullptr;
 		factorGrouping[factor_i]->conGroupIndex = -1;
 	}
 	
@@ -225,7 +225,7 @@ LocatingArray::~LocatingArray() {
 	delete[] factorGrouping;
 
 	// deallocate the factor data if it exists
-	if (factorData != NULL) {
+	if (factorData != nullptr) {
 		delete factorData;
 	}
 	

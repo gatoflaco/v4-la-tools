@@ -47,7 +47,7 @@ FactorData::FactorData(string file) {
 				ifs >> factor->levelValues[level_i];
 			}
 		} else {
-			factor->levelValues = NULL;
+			factor->levelValues = nullptr;
 		}
 		
 		factors[factor_i] = factor;
@@ -87,7 +87,7 @@ FactorData::FactorData(GroupingInfo **arrayInfo, int factorCount) {
 			factor->levelNames[level_i] = oss.str();
 		}
 		
-		factor->levelValues = NULL;
+		factor->levelValues = nullptr;
 		
 		factors[factor_i] = factor;
 	}

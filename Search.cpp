@@ -20,7 +20,7 @@
 using namespace std;
 
 // static member of the class
-WorkSpace *Model::workSpace = NULL;
+WorkSpace *Model::workSpace = nullptr;
 
 // loader section
 void loadResponseVector(VectorXf *response, string directory, string column, bool performLog, Noise *noise) {
@@ -28,7 +28,7 @@ void loadResponseVector(VectorXf *response, string directory, string column, boo
 	
 	// open the directory
 	DIR *dir = opendir(directory.c_str());
-	if (dir == NULL) {
+	if (dir == nullptr) {
 		cout << "Cannot open directory \"" << directory << "\"" << endl;
 		exit(0);
 	}
@@ -55,7 +55,7 @@ void loadResponseVector(VectorXf *response, string directory, string column, boo
 		responseData[row_i] = 0;
 	}
 	
-	while ((dp = readdir(dir)) != NULL) {
+	while ((dp = readdir(dir)) != nullptr) {
 		
 		// go through not hidden files
 		if (dp->d_name[0] != '.') {
@@ -149,7 +149,7 @@ void loadResponseVector(VectorXf *response, string directory, string column, boo
 	
 	// add noise as necessary
 	float range = maxResponse - minResponse;
-	if (noise != NULL) {
+	if (noise != nullptr) {
 		for (int row_i = 0; row_i < rows; row_i++) {
 			data[row_i] = noise->addNoise(data[row_i], range);
 		}
@@ -176,7 +176,7 @@ void allocateOccurrences(Occurrence *occurrence, int t, int factors, list<Occurr
 	
 	// no more factors or interactions to allocate for
 	if (factors == 0 || t == 0) {
-		occurrence->list = NULL;
+		occurrence->list = nullptr;
 		return;
 	}
 	
@@ -206,7 +206,7 @@ void allocateOccurrences(Occurrence *occurrence, int t, int factors, list<Occurr
 
 void deallocateOccurrences(Occurrence *occurrence, int factors) {
 	
-	if (occurrence != NULL && occurrence->list != NULL) {
+	if (occurrence != nullptr && occurrence->list != nullptr) {
 		
 		for (int factor_i = 0; factor_i < factors; factor_i++) {
 			// deallocate list of factors for occurrences
@@ -250,7 +250,7 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 	// populate initial top models
 	topModels[0] = new Model(response, maxTerms, csMatrix);
 	for (int model_i = 1; model_i < models_n; model_i++)
-		topModels[model_i] = NULL;
+		topModels[model_i] = nullptr;
 	
 	// struct for linked list of top columns of CS matrix
 	struct ColDetails {
@@ -263,19 +263,19 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 	// allocate memory for top columns
 	colDetails = new ColDetails[csMatrix->getCols()];
 	
-	while (topModels[0] != NULL && topModels[0]->getTerms() < maxTerms) {
+	while (topModels[0] != nullptr && topModels[0]->getTerms() < maxTerms) {
 		// LOOP HERE
 		
-		// make sure all next top models are NULL
+		// make sure all next top models are nullptr
 		for (int model_i = 0; model_i < models_n; model_i++) {
-			nextTopModels[model_i] = NULL;
+			nextTopModels[model_i] = nullptr;
 		}
 		
 		// grab the models from the topModels priority queue
 		for (int model_i = 0; model_i < models_n; model_i++) {
 			
-			// we are done finding the next top models if we hit a NULL model
-			if (topModels[model_i] == NULL) break;
+			// we are done finding the next top models if we hit a nullptr model
+			if (topModels[model_i] == nullptr) break;
 			
 			// grab the model from top models queue
 			model = topModels[model_i];
@@ -329,7 +329,7 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 				// check if the model is a duplicate
 				bool isDuplicate = false;
 				for (int model_i = 0; model_i < models_n; model_i++) {
-					if (nextTopModels[model_i] == NULL) {
+					if (nextTopModels[model_i] == nullptr) {
 						break;
 					} else if (nextTopModels[model_i]->isDuplicate(model)) {
 						cout << "Duplicate Model!!!" << endl;
@@ -340,13 +340,13 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 				
 				if (!isDuplicate) {
 					// find a possible next top model to replace
-					if (nextTopModels[models_n - 1] == NULL ||
+					if (nextTopModels[models_n - 1] == nullptr ||
 						nextTopModels[models_n - 1]->getRSquared() < model->getRSquared()) {
 						
 						// make sure we deallocate the older next top model
-						if (nextTopModels[models_n - 1] != NULL) {
+						if (nextTopModels[models_n - 1] != nullptr) {
 							delete nextTopModels[models_n - 1];
-							nextTopModels[models_n - 1] = NULL;
+							nextTopModels[models_n - 1] = nullptr;
 						}
 						
 						// insert the new next top model
@@ -355,7 +355,7 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 					
 					// perform swapping to maintain sorted list
 					for (int model_i = models_n - 2; model_i >= 0; model_i--) {
-						if (nextTopModels[model_i] == NULL ||
+						if (nextTopModels[model_i] == nullptr ||
 							nextTopModels[model_i]->getRSquared() < nextTopModels[model_i + 1]->getRSquared()) {
 							
 							Model *temp = nextTopModels[model_i];
@@ -382,7 +382,7 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 		}
 		
 		// find the top model
-		if (topModels[0] != NULL) {
+		if (topModels[0] != nullptr) {
 			cout << "Top Model (" << topModels[0]->getRSquared() << "):" << endl;
 			topModels[0]->printModelFactors();
 		} else {
@@ -405,14 +405,14 @@ void createModels(LocatingArray *locatingArray, VectorXf *response, CSMatrix *cs
 	cout << endl;
 	cout << "Final Models Ranking: " << endl;
 	for (int model_i = 0; model_i < models_n; model_i++) {
-		if (topModels[model_i] != NULL) {
+		if (topModels[model_i] != nullptr) {
 			cout << "Model " << (model_i + 1) << " (" << topModels[model_i]->getRSquared() << "):" << endl;
 			topModels[model_i]->printModelFactors();
 			cout << endl;
 			
 			topModels[model_i]->countOccurrences(occurrence);
 			delete topModels[model_i];
-			topModels[model_i] = NULL;
+			topModels[model_i] = nullptr;
 		} else {
 			break;
 		}
@@ -474,7 +474,7 @@ int main(int argc, char **argv) {
 	
 	// ./Search LA_LARGE.tsv Factors_LARGE.tsv analysis responses_LARGE Throughput 1 13 50 50
 	
-	long long int seed = time(NULL);
+	long long int seed = time(nullptr);
 	cout << "Seed:\t" << seed << endl;
 	srand(seed);
 	
@@ -483,7 +483,7 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 	
-	Noise *noise = NULL;
+	Noise *noise = nullptr;
 	LocatingArray *array = new LocatingArray(argv[1], argv[2]);
 	
 	CSMatrix *matrix = new CSMatrix(array);

@@ -24,7 +24,7 @@ public:
 	// names of the levels
 	string *levelNames;
 	
-	// values of the levels (NULL if numeric is false)
+	// values of the levels (nullptr if numeric is false)
 	float *levelValues;
 	
 };

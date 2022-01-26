@@ -248,6 +248,7 @@ BoolResult *BoolResult::readBoolResult(LocatingArray *array, ifstream &ifs) {
 		return new IfResult(array, ifs);
 	}
 	
+	return nullptr;
 }
 
 BoolResult::~BoolResult() {
@@ -274,6 +275,7 @@ FloatResult *FloatResult::readFloatResult(LocatingArray *array, ifstream &ifs) {
 		return new FactorAssignment(array, ifs);
 	}
 	
+	return nullptr;
 }
 
 FloatResult::~FloatResult() {
